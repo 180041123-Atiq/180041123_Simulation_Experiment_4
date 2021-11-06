@@ -1,0 +1,60 @@
+# depslib dependency file v1.0
+1636168214 source:f:\31\sim\180041123_simulation_experiment_4\src\event.cpp
+	"Event.h"
+
+1636169155 f:\31\sim\180041123_simulation_experiment_4\include\event.h
+
+1636208093 source:f:\31\sim\180041123_simulation_experiment_4\src\scheduler.cpp
+	"Scheduler.h"
+	"Event.h"
+	"Server.h"
+	<list>
+	<iostream>
+	<bits/stdc++.h>
+
+1636208090 f:\31\sim\180041123_simulation_experiment_4\include\scheduler.h
+	<bits/stdc++.h>
+	"Event.h"
+
+1636213582 source:f:\31\sim\180041123_simulation_experiment_4\main.cpp
+	<bits/stdc++.h>
+	"Event.h"
+	"Scheduler.h"
+	"Item.h"
+	"Queue.h"
+	"Scenario.h"
+
+1636169864 source:f:\31\sim\180041123_simulation_experiment_4\src\server.cpp
+	"Server.h"
+	<iostream>
+
+1636169837 f:\31\sim\180041123_simulation_experiment_4\include\server.h
+
+1636175089 source:f:\31\sim\180041123_simulation_experiment_4\src\item.cpp
+	"Item.h"
+
+1636175114 f:\31\sim\180041123_simulation_experiment_4\include\item.h
+
+1636175957 source:f:\31\sim\180041123_simulation_experiment_4\src\queue.cpp
+	"Queue.h"
+	"Item.h"
+	<list>
+
+1636175497 f:\31\sim\180041123_simulation_experiment_4\include\queue.h
+	<list>
+	"Item.h"
+
+1636210836 f:\31\sim\180041123_simulation_experiment_4\include\scenario.h
+	"Scheduler.h"
+	"Server.h"
+	"Queue.h"
+	"Event.h"
+	"Item.h"
+	<fstream>
+
+1636213348 source:f:\31\sim\180041123_simulation_experiment_4\src\scenario.cpp
+	"Scenario.h"
+	<iostream>
+	"Event.h"
+	"Item.h"
+
