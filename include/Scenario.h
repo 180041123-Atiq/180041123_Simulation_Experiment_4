@@ -60,6 +60,9 @@ class Scenario : public Scheduler
 
         double total_queuing_delay;
         double total_system_delay;
+        double total_number_item;
+        double total_util_s1;
+        double total_util_s2;
 
        std::ofstream trace_;
 };

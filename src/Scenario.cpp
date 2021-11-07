@@ -88,6 +88,9 @@ void Scenario::initialize()
         total_serviced_item = 0;
         total_queuing_delay = 0.0;
         total_system_delay = 0.0;
+        total_number_item = 0.0;
+        total_util_s1 = 0.0;
+        total_util_s2 = 0.0;
         create_trace_file();
 
         //std::cout<<"For initial arrival event ";
@@ -96,8 +99,13 @@ void Scenario::initialize()
 
         run();
 
-        trace_<<"Total Queuing Delay : "<<total_queuing_delay<<std::endl;
-        trace_<<"Total System Delay : "<<total_system_delay<<std::endl;
+        trace_<<"Average Waiting Time : "<<(total_queuing_delay/100.0)<<std::endl;
+        trace_<<"Average # Jobs in System : "<<( ( total_number_item*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Server 1 Utilization : "<<( ( total_util_s1*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Server 2 Utilization : "<<( ( total_util_s2*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Average System Delay : "<<( (total_system_delay*(1.0)) / 100.0 )<<std::endl;
+
+        //trace_<<"Total Queueing Delay : "<<(total_queuing_delay)<<std::endl;
     }
     else if(id == 2)
     {
@@ -106,6 +114,9 @@ void Scenario::initialize()
         total_serviced_item = 0;
         total_queuing_delay = 0.0;
         total_system_delay = 0.0;
+        total_number_item = 0.0;
+        total_util_s1 = 0.0;
+        total_util_s2 = 0.0;
         create_trace_file();
 
         Event e = create_arrival_event(exponential(arrival_mean));
@@ -113,8 +124,13 @@ void Scenario::initialize()
 
         run();
 
-        trace_<<"Total Queuing Delay : "<<total_queuing_delay<<std::endl;
-        trace_<<"Total System Delay : "<<total_system_delay<<std::endl;
+        trace_<<"Average Waiting Time : "<<(total_queuing_delay/100.0)<<std::endl;
+        trace_<<"Average # Jobs in System : "<<( ( total_number_item*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Server 1 Utilization : "<<( ( total_util_s1*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Server 2 Utilization : "<<( ( total_util_s2*(1.0) ) / ( now()*(1.0) ) )<<std::endl;
+        trace_<<"Average System Delay : "<<( (total_system_delay*(1.0)) / 100.0)<<std::endl;
+
+        //trace_<<"Total Queueing Delay : "<<(total_queuing_delay)<<std::endl;
     }
 }
 
@@ -165,6 +181,8 @@ void Scenario::arrival_handler()
         {
             if(s1_status == 0)
             {
+                total_util_s1 += s1_status;
+
                 ii.added_to_server_at = now();
                 item_in_service_at_s1 = ii;
                 s1_status = 1;
@@ -175,14 +193,20 @@ void Scenario::arrival_handler()
             }
             else if(s1_status == 1)
             {
+                total_util_s1 += s1_status;
+
                 ii.added_to_queue_at = now();
                 q1.enque_(ii);
+
+                total_number_item += q1.size_() + s1_status;
             }
         }
         else if(q1.size_() > q2.size_())
         {
             if(s2_status == 0)
             {
+                total_util_s2 += s2_status;
+
                 ii.added_to_server_at = now();
                 item_in_service_at_s2 = ii;
                 s2_status = 1;
@@ -193,8 +217,12 @@ void Scenario::arrival_handler()
             }
             else if(s2_status == 1)
             {
+                total_util_s2 += s2_status;
+
                 ii.added_to_queue_at = now();
                 q2.enque_(ii);
+
+                total_number_item += q2.size_() + s2_status;
             }
         }
 
@@ -213,6 +241,8 @@ void Scenario::arrival_handler()
 
         if(s1_status == 0)
         {
+            total_util_s1 += s1_status;
+
             ii.added_to_server_at = now();
             item_in_service_at_s1 = ii;
             s1_status = 1;
@@ -222,6 +252,8 @@ void Scenario::arrival_handler()
         }
         else if(s2_status == 0)
         {
+            total_util_s2 += s2_status;
+
             ii.added_to_server_at = now();
             item_in_service_at_s2 = ii;
             s2_status = 1;
@@ -231,8 +263,13 @@ void Scenario::arrival_handler()
         }
         else if(s1_status == 1 && s2_status == 1)
         {
+            total_util_s1 += s1_status;
+            total_util_s2 += s2_status;
+
             ii.added_to_queue_at = now();
             q1.enque_(ii);
+
+            total_number_item += q1.size_() + s1_status + s2_status;
         }
 
         if(total_serviced_item < 100)
@@ -248,6 +285,8 @@ void Scenario::departure_handler_1()
 {
     if(id == 1)
     {
+        total_util_s1 += s1_status;
+
         //std::cout<<"Inside Departure handler 1"<<now()<<' '<<total_serviced_item<<'\n';
 
         Item ii = item_in_service_at_s1;
@@ -277,6 +316,8 @@ void Scenario::departure_handler_1()
     }
     else if(id == 2)
     {
+        total_util_s1 += s1_status;
+
         Item ii = item_in_service_at_s1;
         ii.leave_server_at = now();
 
@@ -304,6 +345,8 @@ void Scenario::departure_handler_2()
 {
     if(id == 1)
     {
+        total_util_s2 += s2_status;
+
         //std::cout<<"Inside Departure handler 2"<<now()<<' '<<total_serviced_item<<'\n';
 
         Item ii = item_in_service_at_s2;
@@ -333,6 +376,8 @@ void Scenario::departure_handler_2()
     }
     else if(id == 2)
     {
+        total_util_s2 += s2_status;
+
         Item ii = item_in_service_at_s2;
         ii.leave_server_at = now();
 

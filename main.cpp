@@ -116,7 +116,7 @@ int main()
     Scenario obj1;
 
     obj1.set_id(1);
-    obj1.set_arrival_mean(2.0);
+    obj1.set_arrival_mean(1.0);
     obj1.set_departure_mean(3.0);
 
     obj1.initialize();
@@ -124,7 +124,7 @@ int main()
     Scenario obj2;
 
     obj2.set_id(2);
-    obj2.set_arrival_mean(2.0);
+    obj2.set_arrival_mean(1.0);
     obj2.set_departure_mean(3.0);
 
     obj2.initialize();

@@ -1,4 +1,7 @@
 trace file for the Scenario 1
 
-Total Queuing Delay : 684.34
-Total System Delay : 3866.69
+Average Waiting Time : 28.5505
+Average # Jobs in System : 5.79737
+Server 1 Utilization : 0.61142
+Server 2 Utilization : 0.483577
+Average System Delay : 32.131
